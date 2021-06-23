@@ -81,6 +81,34 @@ export default function TabOneScreen() {
             source={require("../assets/images/play.png")}
           />
         </ImageBackground>
+        <Text
+          style={{
+            fontSize: 25,
+            fontWeight: "400",
+            marginLeft: 30,
+            marginRight: 30,
+            marginTop: 10,
+          }}
+        >
+          Lorem ipsum
+        </Text>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "400",
+            marginLeft: 30,
+            marginRight: 30,
+            marginTop: 10,
+          }}
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui o
+        </Text>
       </View>
     </View>
   );
