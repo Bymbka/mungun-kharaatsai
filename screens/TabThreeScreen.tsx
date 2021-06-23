@@ -23,7 +23,7 @@ import { useIsFocused } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeght = Dimensions.get("window").height;
 
-const Item = ({ item, onPress, style }) => (
+const Item = ({ item, onPress, style, index }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
     <View
       style={{
@@ -65,7 +65,7 @@ const Item = ({ item, onPress, style }) => (
       <TouchableOpacity
         style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
       >
-        <Text style={styles.title}>{item.id}</Text>
+        <Text style={styles.title}>{index + 1}</Text>
         <Text style={{ fontSize: 15, fontWeight: "700" }}>{item.like}</Text>
       </TouchableOpacity>
     </View>
@@ -101,11 +101,12 @@ export default function App() {
     });
   }, []);
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index, separators }) => {
     const backgroundColor = "#fff";
     return (
       <Item
         item={item}
+        index={index}
         onPress={() => videoDetail(item.videoUrl, item)}
         style={{ backgroundColor }}
       />
@@ -175,7 +176,7 @@ export default function App() {
       <FlatList
         data={dbList}
         renderItem={renderItem}
-        keyExtractor={(item) => item.description}
+        keyExtractor={(item, index) => index.toString()}
         extraData={selectedId}
       />
     </SafeAreaView>

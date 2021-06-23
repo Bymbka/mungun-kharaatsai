@@ -9,6 +9,7 @@ import {
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
+import { Video, AVPlaybackStatus } from "expo-av";
 
 const image = { uri: "https://reactjs.org/logo-og.png" };
 const windowWidth = Dimensions.get("window").width;

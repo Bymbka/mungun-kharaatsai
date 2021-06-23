@@ -7,6 +7,9 @@ import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import firebase from "./screens/util/firebase";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["Setting a timer"]);
 
 export default function App() {
   const addtodata = firebase.database().ref("LiveDB");

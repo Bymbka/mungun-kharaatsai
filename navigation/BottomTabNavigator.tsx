@@ -5,7 +5,10 @@
 
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import * as React from "react";
 
 import Colors from "../constants/Colors";
@@ -20,9 +23,14 @@ import {
   TabTwoParamList,
   TabThreeParamList,
 } from "../types";
+
 import { View, Image, StyleSheet } from "react-native";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+
+const NAVIGATION_TRANSITION_EFFECT = {
+  ...TransitionPresets.SlideFromRightIOS,
+};
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
@@ -80,11 +88,7 @@ const TabOneStack = createStackNavigator<TabOneParamList>();
 function TabOneNavigator() {
   return (
     <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: "Live" }}
-      />
+      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} />
     </TabOneStack.Navigator>
   );
 }
@@ -97,7 +101,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: "" }}
+        options={{ headerTitle: "Video" }}
       />
     </TabTwoStack.Navigator>
   );

@@ -123,10 +123,10 @@ export default function App() {
   };
 
   const videoDetail = async (url: string, item: object) => {
-    // console.warn(item.videoUrl);
-    // navigation.navigate("TabTwoStack", {
-    //   screen: "TabTwoVideoDetail",
-    // });
+    console.warn(item.videoUrl);
+    navigation.navigate("TabTwoStack", {
+      screen: "TabTwoVideoDetail",
+    });
     // navigation.navigate("TabTwoVideoDetail");
   };
 
@@ -185,7 +185,7 @@ export default function App() {
       <FlatList
         data={dbList}
         renderItem={renderItem}
-        keyExtractor={(item) => item.description}
+        keyExtractor={(item, index) => index.toString()}
         extraData={selectedId}
       />
     </SafeAreaView>
