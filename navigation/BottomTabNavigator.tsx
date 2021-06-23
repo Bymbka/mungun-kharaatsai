@@ -17,14 +17,13 @@ import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import TabThreeScreen from "../screens/TabThreeScreen";
 import TabTwoVideoDetail from "../screens/TabTwoVideoDetail";
+
 import {
   BottomTabParamList,
   TabOneParamList,
   TabTwoParamList,
   TabThreeParamList,
 } from "../types";
-
-import { View, Image, StyleSheet } from "react-native";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -88,7 +87,11 @@ const TabOneStack = createStackNavigator<TabOneParamList>();
 function TabOneNavigator() {
   return (
     <TabOneStack.Navigator>
-      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} />
+      <TabOneStack.Screen
+        name="TabOneScreen"
+        component={TabOneScreen}
+        options={{ headerShown: false }}
+      />
     </TabOneStack.Navigator>
   );
 }
@@ -101,7 +104,12 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: "Video" }}
+        options={{ headerShown: false }}
+      />
+      <TabTwoStack.Screen
+        name="TabTwoVideoDetail"
+        component={TabTwoVideoDetail}
+        initialParams={{ videoUrl: "hellow world" }}
       />
     </TabTwoStack.Navigator>
   );

@@ -18,28 +18,70 @@ const windowHeght = Dimensions.get("window").height;
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-
-      <TouchableHighlight style={styles.banner}>
-        <View>
-          <ImageBackground
-            style={styles.image}
-            source={require("../assets/images/AppIcons/live.jpg")}
-          >
-            <Image
-              style={styles.image}
-              source={require("../assets/images/AppIcons/live.jpg")}
-            />
-          </ImageBackground>
-        </View>
-      </TouchableHighlight>
-
       <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+        style={{
+          flexDirection: "row",
+          width: windowWidth,
+          height: 100,
+          alignItems: "center",
+          marginTop: 20,
+          paddingLeft: 20,
+        }}
+      >
+        <View style={{ margin: 10 }}>
+          <Image
+            style={{
+              height: 50,
+              width: 50,
+              borderRadius: 5,
+              resizeMode: "stretch",
+            }}
+            source={require("../assets/images/mklogo.png")}
+          />
+        </View>
+        <View>
+          <Text style={styles.title}>Mungun Kharaatsai</Text>
+          <Text style={{ color: "#000" }}>
+            International Children's Virtual Festival
+          </Text>
+        </View>
+      </View>
+
+      <View>
+        <Text
+          style={{
+            marginLeft: 30,
+            fontWeight: "bold",
+            fontSize: 30,
+            marginBottom: 10,
+          }}
+        >
+          Live broadcast
+        </Text>
+        <ImageBackground
+          style={{
+            width: windowWidth - 60,
+            height: windowWidth / 2 - 20,
+            marginLeft: 30,
+            borderRadius: 5,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          source={{
+            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuwxl2r_4q6MW_iJYCX4RIYGZkQLLoPpG-mg&usqp=CAU",
+          }}
+        >
+          <Image
+            style={{
+              height: 50,
+              width: 50,
+              borderRadius: 5,
+              resizeMode: "stretch",
+            }}
+            source={require("../assets/images/play.png")}
+          />
+        </ImageBackground>
+      </View>
     </View>
   );
 }
@@ -47,7 +89,6 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   banner: {
     borderRadius: 20,
@@ -71,11 +112,5 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "bold",
-    marginBottom: 20,
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
   },
 });

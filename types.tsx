@@ -20,6 +20,7 @@ export type TabOneParamList = {
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
+  TabTwoVideoDetail: { videoUrl: string };
 };
 
 export type TabThreeParamList = {

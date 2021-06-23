@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  ImageBackground,
   Alert,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import firebase from "./util/firebase";
 import { useIsFocused } from "@react-navigation/native";
+import iconSet from "@expo/vector-icons/build/Fontisto";
 
 // interface Props {
 //   navigation: any;
@@ -50,17 +52,28 @@ const Item = ({ item, onPress, style }) => (
         <Text style={styles.description}>{item.description}</Text>
       </View>
       <View style={{ flex: 0.3, padding: 5 }}>
-        <Image
+        <ImageBackground
           style={{
             height: 60,
             width: 90,
             borderRadius: 5,
-            resizeMode: "stretch",
+            justifyContent: "center",
+            alignItems: "center",
           }}
           source={{
             uri: item.videoImg,
           }}
-        />
+        >
+          <Image
+            style={{
+              height: 30,
+              width: 30,
+              borderRadius: 5,
+              resizeMode: "stretch",
+            }}
+            source={require("../assets/images/play.png")}
+          />
+        </ImageBackground>
       </View>
       <TouchableOpacity
         style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
@@ -123,8 +136,9 @@ export default function App() {
   };
 
   const videoDetail = async (url: string, item: object) => {
-    console.warn(item.videoUrl);
-    navigation.navigate("TabTwoStack", {
+    const { navigate } = this.props.navigation;
+    //console.warn(item.videoUrl);
+    navigate("TabTwoStack", {
       screen: "TabTwoVideoDetail",
     });
     // navigation.navigate("TabTwoVideoDetail");
@@ -151,6 +165,34 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View
+        style={{
+          flexDirection: "row",
+          width: windowWidth,
+          height: 100,
+          alignItems: "center",
+          marginTop: 20,
+          paddingLeft: 20,
+        }}
+      >
+        <View style={{ margin: 10 }}>
+          <Image
+            style={{
+              height: 50,
+              width: 50,
+              borderRadius: 5,
+              resizeMode: "stretch",
+            }}
+            source={require("../assets/images/mklogo.png")}
+          />
+        </View>
+        <View>
+          <Text style={styles.title}>Mungun Kharaatsai</Text>
+          <Text style={{ color: "#000" }}>
+            International Children's Virtual Festival
+          </Text>
+        </View>
+      </View>
       <View
         style={{
           flexDirection: "row",
