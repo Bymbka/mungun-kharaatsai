@@ -78,7 +78,33 @@ const Item = ({ item, onPress, style, index }) => (
         style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
       >
         <Text style={styles.title}>{index + 1}</Text>
-        <Text style={{ fontSize: 15, fontWeight: "700" }}>{item.like}</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: "700",
+              color: "#f15a5a",
+              marginEnd: 5,
+            }}
+          >
+            {item.like}
+          </Text>
+          <Image
+            style={{
+              height: 10,
+              width: 10,
+              borderRadius: 35,
+              resizeMode: "stretch",
+            }}
+            source={require("../assets/images/heart.png")}
+          />
+        </View>
       </TouchableOpacity>
     </View>
     <View

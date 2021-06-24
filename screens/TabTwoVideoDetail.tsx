@@ -1,6 +1,9 @@
 import * as React from "react";
-import { View, StyleSheet, Button } from "react-native";
+import { View, StyleSheet, Button, Dimensions } from "react-native";
 import { Video, AVPlaybackStatus } from "expo-av";
+
+const windowWidth = Dimensions.get("window").width;
+const windowHeght = Dimensions.get("window").height;
 
 export default function App() {
   const video = React.useRef(null);
@@ -40,8 +43,8 @@ const styles = StyleSheet.create({
   },
   video: {
     alignSelf: "center",
-    width: 320,
-    height: 200,
+    width: windowWidth - 20,
+    height: windowWidth / 2,
   },
   buttons: {
     flexDirection: "row",

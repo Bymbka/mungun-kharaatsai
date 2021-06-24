@@ -80,10 +80,10 @@ const Item = ({ item, onPress, style }) => (
       >
         <Image
           style={{
-            height: 40,
-            width: 40,
+            height: 30,
+            width: 30,
             borderRadius: 35,
-            resizeMode: "stretch",
+            resizeMode: "center",
           }}
           source={require("../assets/images/like.png")}
         />
@@ -100,7 +100,7 @@ const Item = ({ item, onPress, style }) => (
   </TouchableOpacity>
 );
 
-export default function App() {
+export default function App(props) {
   const [selectedId, setSelectedId] = useState(null);
   const [allList, setAllList] = useState();
   const [dbList, setDbList] = useState();
@@ -136,11 +136,9 @@ export default function App() {
   };
 
   const videoDetail = async (url: string, item: object) => {
-    const { navigate } = this.props.navigation;
+    const { navigate } = props.navigation;
     //console.warn(item.videoUrl);
-    navigate("TabTwoStack", {
-      screen: "TabTwoVideoDetail",
-    });
+    navigate("TabTwoVideoDetail");
     // navigation.navigate("TabTwoVideoDetail");
   };
 
