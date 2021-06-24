@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   title: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "bold",
   },
   description: {
