@@ -14,6 +14,7 @@ import { Text, View } from "../components/Themed";
 import firebase from "./util/firebase";
 import { useIsFocused } from "@react-navigation/native";
 import iconSet from "@expo/vector-icons/build/Fontisto";
+import * as Network from "expo-network";
 
 // interface Props {
 //   navigation: any;
@@ -24,6 +25,25 @@ import iconSet from "@expo/vector-icons/build/Fontisto";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeght = Dimensions.get("window").height;
+const addtodata = firebase.database().ref("LikesList");
+
+const likeClickHandler = (value) => {
+  var date = new Date().getDate(); //Current Date
+  var month = new Date().getMonth() + 1; //Current Month
+  var year = new Date().getFullYear(); //Current Year
+  var hours = new Date().getHours(); //Current Hours
+  var min = new Date().getMinutes(); //Current Minutes
+  var sec = new Date().getSeconds(); //Current Seconds
+  Network.getIpAddressAsync().then((v) => {
+    const data = {
+      videoId: value.id,
+      ipAddress: v,
+      createDate:
+        date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec,
+    };
+    addtodata.push(data);
+  });
+};
 
 const Item = ({ item, onPress, style }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -77,6 +97,7 @@ const Item = ({ item, onPress, style }) => (
       </View>
       <TouchableOpacity
         style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
+        onPress={() => likeClickHandler(item)}
       >
         <Image
           style={{
@@ -107,15 +128,18 @@ export default function App(props) {
   const [cate1, setCate1] = useState(true);
   const [cate2, setCate2] = useState(false);
   const [cate3, setCate3] = useState(false);
+  const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
     const dbselect = firebase.database().ref("VideoDB");
+
     dbselect.on("value", (snapshot) => {
       const data = snapshot.val();
       const allList = [];
       for (let i in data) {
         allList.push(data[i]);
       }
+
       setAllList(allList);
       setDbList(allList.filter((el) => el.category.toLowerCase().includes(1)));
       setCate1(true);

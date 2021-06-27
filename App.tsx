@@ -34,7 +34,9 @@ export default function App() {
       "https://raw.githubusercontent.com/Bymbka/Nairamdal/main/record4.mov",
     videoImg: "https://pbs.twimg.com/media/CJgpPSHUsAAQt6S.png",
     like: "12",
-    category: "2",
+    category: {
+      dff: "",
+    },
   };
   //addtodata.push(mungunkharaatsai);
   // addtodataVideo.push(videoAll);
