@@ -43,7 +43,7 @@ export default function TabOneScreen(props) {
   const liveStart = () => {
     if (liveVideoStream.length > 5) {
       const { navigate } = props.navigation;
-      navigate("TabTwoVideoDetail", {
+      navigate("LivePlayer", {
         videoUrl: liveVideoStream,
       });
     } else {

@@ -17,6 +17,7 @@ import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import TabThreeScreen from "../screens/TabThreeScreen";
 import TabTwoVideoDetail from "../screens/TabTwoVideoDetail";
+import LivePlayer from "../screens/LivePlayer";
 
 import {
   BottomTabParamList,
@@ -92,8 +93,8 @@ function TabOneNavigator() {
         options={{ headerShown: false }}
       />
       <TabTwoStack.Screen
-        name="TabTwoVideoDetail"
-        component={TabTwoVideoDetail}
+        name="LivePlayer"
+        component={LivePlayer}
         options={{ headerTitle: "Live" }}
         initialParams={{ videoUrl: "hellow world" }}
       />

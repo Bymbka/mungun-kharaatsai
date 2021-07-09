@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "mungun-kharaatsai",
-    "slug": "mungun-kharaatsai",
-    "version": "2.0.0",
+    "name": "mungun kharaatsai",
+    "slug": "mungun kharaatsai",
+    "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -21,7 +21,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.batjargal11.mungunkharaatsai",
-      "icon": "./assets/images/icon.png",
+      "icon": "./assets/images/icon.png"
     },
     "android": {
       "icon": "./assets/images/icon.png",
@@ -31,7 +31,7 @@
       },
       "permissions": [],
       "package": "com.batjargal11.mungunkharaatsai",
-      "versionCode": 4
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
