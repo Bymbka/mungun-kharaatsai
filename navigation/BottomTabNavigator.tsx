@@ -60,7 +60,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="Rank"
-        component={TabThreeScreen}
+        component={TabThreeNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="stats-chart" color={color} />
@@ -79,7 +79,6 @@ function TabBarIcon(props: {
 }) {
   return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
-
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
 const TabOneStack = createStackNavigator<TabOneParamList>();
@@ -91,6 +90,12 @@ function TabOneNavigator() {
         name="TabOneScreen"
         component={TabOneScreen}
         options={{ headerShown: false }}
+      />
+      <TabTwoStack.Screen
+        name="TabTwoVideoDetail"
+        component={TabTwoVideoDetail}
+        options={{ headerTitle: "Live" }}
+        initialParams={{ videoUrl: "hellow world" }}
       />
     </TabOneStack.Navigator>
   );
@@ -109,6 +114,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoVideoDetail"
         component={TabTwoVideoDetail}
+        options={{ headerTitle: "Video player" }}
         initialParams={{ videoUrl: "hellow world" }}
       />
     </TabTwoStack.Navigator>
@@ -117,14 +123,20 @@ function TabTwoNavigator() {
 
 const TabThreeStack = createStackNavigator<TabThreeParamList>();
 
-// function TabThreeStack() {
-//   return (
-//     <TabThreeStack.Navigator>
-//       <TabThreeStack.Screen
-//         name="TabThreeScreen"
-//         component={TabTwoScreen}
-//         options={{ headerTitle: "" }}
-//       />
-//     </TabThreeStack.Navigator>
-//   );
-// }
+function TabThreeNavigator() {
+  return (
+    <TabThreeStack.Navigator>
+      <TabThreeStack.Screen
+        name="TabThreeScreen"
+        component={TabThreeScreen}
+        options={{ headerShown: false }}
+      />
+      <TabTwoStack.Screen
+        name="TabTwoVideoDetail"
+        component={TabTwoVideoDetail}
+        options={{ headerTitle: "Video player" }}
+        initialParams={{ videoUrl: "" }}
+      />
+    </TabThreeStack.Navigator>
+  );
+}

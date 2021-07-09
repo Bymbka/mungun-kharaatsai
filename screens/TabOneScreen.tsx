@@ -1,21 +1,56 @@
-import * as React from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import {
   StyleSheet,
   ImageBackground,
   TouchableHighlight,
   Dimensions,
   Image,
+  Alert,
 } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { Video, AVPlaybackStatus } from "expo-av";
+import axios from "./util/axios-ordera";
+import { strict } from "yargs";
 
 const image = { uri: "https://reactjs.org/logo-og.png" };
 const windowWidth = Dimensions.get("window").width;
 const windowHeght = Dimensions.get("window").height;
 
-export default function TabOneScreen() {
+export default function TabOneScreen(props) {
+  const [liveTitle, setLiveTitle] = useState(String);
+  const [liveDescriptionTitle, setLiveDescriptionTitle] = useState(String);
+  const [liveDescription, setLiveDescription] = useState(String);
+  const [liveBackImage, setLiveBackImage] = useState(Object);
+  const [liveVideoStream, setLiveVideoStream] = useState(String);
+  const image = { uri: "https://reactjs.org/logo-og.png" };
+  useEffect(() => {
+    axios.get("/LiveDB.json").then((response) => {
+      const arr = Object.entries(response.data);
+      // arr.forEach((el) => {
+      //   console.log(el[1].descriptionTitle);
+      // });
+      const lastOrder = arr[arr.length - 1][1];
+      setLiveTitle(lastOrder.title);
+      setLiveDescriptionTitle(lastOrder.descriptionTitle);
+      setLiveDescription(lastOrder.description);
+      setLiveBackImage({ uri: lastOrder.image });
+      setLiveVideoStream(lastOrder.liveUrl);
+    });
+  }, []);
+
+  const liveStart = () => {
+    if (liveVideoStream.length > 5) {
+      const { navigate } = props.navigation;
+      navigate("TabTwoVideoDetail", {
+        videoUrl: liveVideoStream,
+      });
+    } else {
+      Alert.alert("LIVE олдсонгүй");
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -52,62 +87,66 @@ export default function TabOneScreen() {
           style={{
             marginLeft: 30,
             fontWeight: "bold",
-            fontSize: 30,
+            fontSize: 15,
             marginBottom: 10,
           }}
         >
-          Live broadcast
+          {liveTitle}
         </Text>
-        <ImageBackground
+        <TouchableHighlight
           style={{
             width: windowWidth - 60,
             height: windowWidth / 2 - 20,
             marginLeft: 30,
-            borderRadius: 5,
             alignItems: "center",
             justifyContent: "center",
           }}
-          source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuwxl2r_4q6MW_iJYCX4RIYGZkQLLoPpG-mg&usqp=CAU",
-          }}
+          onPress={() => liveStart()}
         >
-          <Image
+          <ImageBackground
             style={{
-              height: 50,
-              width: 50,
+              width: windowWidth - 60,
+              height: windowWidth / 2 - 20,
+
               borderRadius: 5,
-              resizeMode: "stretch",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-            source={require("../assets/images/play.png")}
-          />
-        </ImageBackground>
-        <Text
-          style={{
-            fontSize: 25,
-            fontWeight: "400",
-            marginLeft: 30,
-            marginRight: 30,
-            marginTop: 10,
-          }}
-        >
-          Lorem ipsum
-        </Text>
+            source={liveBackImage}
+          >
+            <Image
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 5,
+                resizeMode: "stretch",
+              }}
+              source={require("../assets/images/play.png")}
+            />
+          </ImageBackground>
+        </TouchableHighlight>
+
         <Text
           style={{
             fontSize: 15,
+            fontWeight: "bold",
+            marginLeft: 30,
+            marginRight: 30,
+            marginTop: 10,
+          }}
+        >
+          {liveDescriptionTitle}
+        </Text>
+        <Text
+          style={{
+            fontSize: 12,
             fontWeight: "400",
             marginLeft: 30,
             marginRight: 30,
             marginTop: 10,
           }}
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui o
+          {liveDescription}
         </Text>
       </View>
     </View>
@@ -134,11 +173,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "grey",
-    fontSize: 30,
+    fontSize: 15,
     fontWeight: "bold",
   },
   title: {
-    fontSize: 30,
+    fontSize: 15,
     fontWeight: "bold",
   },
 });

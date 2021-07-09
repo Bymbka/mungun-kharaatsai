@@ -24,107 +24,127 @@ import { useIsFocused } from "@react-navigation/native";
 const windowWidth = Dimensions.get("window").width;
 const windowHeght = Dimensions.get("window").height;
 
-const Item = ({ item, onPress, style, index }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <View
-      style={{
-        flexDirection: "row",
-        height: 80,
-      }}
-    >
-      <View style={{ flex: 0.2 }}>
-        <Image
-          style={{
-            height: 60,
-            width: 60,
-            borderRadius: 30,
-            resizeMode: "cover",
-            margin: 5,
-          }}
-          source={{
-            uri: item.flagImg,
-          }}
-        />
-      </View>
-      <View style={{ flexDirection: "column", flex: 0.4, padding: 5 }}>
-        <Text style={styles.title}>{item.nickname}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-      </View>
-      <View style={{ flex: 0.3, padding: 5 }}>
-        <ImageBackground
-          style={{
-            height: 60,
-            width: 90,
-            borderRadius: 5,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          source={{
-            uri: item.videoImg,
-          }}
-        >
-          <Image
-            style={{
-              height: 30,
-              width: 30,
-              borderRadius: 5,
-              resizeMode: "stretch",
-            }}
-            source={require("../assets/images/play.png")}
-          />
-        </ImageBackground>
-      </View>
-      <TouchableOpacity
-        style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
+const Item = ({ item, onPress, style, index, likeList }) => {
+  let count = 0;
+  likeList.map((val) => {
+    if (item.id === val.videoId) {
+      count = count + 1;
+    }
+  });
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+      <View
+        style={{
+          flexDirection: "row",
+          height: 80,
+        }}
       >
-        <Text style={styles.title}>{index + 1}</Text>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 15,
-              fontWeight: "700",
-              color: "#f15a5a",
-              marginEnd: 5,
-            }}
-          >
-            {item.like}
-          </Text>
+        <View style={{ flex: 0.2 }}>
           <Image
             style={{
-              height: 10,
-              width: 10,
-              borderRadius: 35,
-              resizeMode: "stretch",
+              height: 50,
+              width: 50,
+              borderRadius: 25,
+              resizeMode: "cover",
+              margin: 5,
             }}
-            source={require("../assets/images/heart.png")}
+            source={{
+              uri: item.flagImg,
+            }}
           />
         </View>
-      </TouchableOpacity>
-    </View>
-    <View
-      style={styles.separator}
-      lightColor="#eee"
-      darkColor="rgba(255,255,255,0.1)"
-    />
-  </TouchableOpacity>
-);
+        <View style={{ flexDirection: "column", flex: 0.3, padding: 5 }}>
+          <Text style={styles.title}>{item.nickname}</Text>
+          <Text style={styles.description}>{item.description}</Text>
+        </View>
+        <View style={{ flex: 0.3, padding: 5 }}>
+          <ImageBackground
+            style={{
+              height: 50,
+              width: 80,
+              borderRadius: 5,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            source={{
+              uri: item.videoImg,
+            }}
+          >
+            <Image
+              style={{
+                height: 30,
+                width: 30,
+                borderRadius: 5,
+                resizeMode: "stretch",
+              }}
+              source={require("../assets/images/play.png")}
+            />
+          </ImageBackground>
+        </View>
+        <TouchableOpacity
+          style={{ flex: 0.2, justifyContent: "center", alignItems: "center" }}
+        >
+          <Text style={styles.title}>{index + 1}</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "700",
+                color: "#f15a5a",
+                marginEnd: 5,
+              }}
+            >
+              {count}
+            </Text>
+            <Image
+              style={{
+                height: 10,
+                width: 10,
+                borderRadius: 35,
+                resizeMode: "stretch",
+              }}
+              source={require("../assets/images/heart.png")}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
+    </TouchableOpacity>
+  );
+};
 
-export default function App() {
+export default function App(props) {
   const [selectedId, setSelectedId] = useState(null);
   const [allList, setAllList] = useState();
   const [dbList, setDbList] = useState();
   const [cate1, setCate1] = useState(true);
   const [cate2, setCate2] = useState(false);
   const [cate3, setCate3] = useState(false);
+  const [allLikeList, setAllLikeList] = useState([]);
 
   useEffect(() => {
     const dbselect = firebase.database().ref("VideoDB");
+    const dbselectLike = firebase.database().ref("LikesList");
+
+    dbselectLike.on("value", (data) => {
+      const likeListObj = data.val();
+      const array = Object.values(likeListObj);
+      // const allLikelist = [];
+      // for (let i in data) {
+      //   allLikelist.push(likeList[i]);
+      // }
+      setAllLikeList(array);
+    });
     dbselect.on("value", (snapshot) => {
       const data = snapshot.val();
       const allList = [];
@@ -147,16 +167,16 @@ export default function App() {
         index={index}
         onPress={() => videoDetail(item.videoUrl, item)}
         style={{ backgroundColor }}
+        likeList={allLikeList}
       />
     );
   };
 
   const videoDetail = async (url: string, item: object) => {
-    // console.warn(item.videoUrl);
-    // navigation.navigate("TabTwoStack", {
-    //   screen: "TabTwoVideoDetail",
-    // });
-    // navigation.navigate("TabTwoVideoDetail");
+    const { navigate } = props.navigation;
+    navigate("TabTwoVideoDetail", {
+      videoUrl: item.videoUrl,
+    });
   };
 
   const cateSelect = async () => {
@@ -260,11 +280,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   title: {
-    fontSize: 25,
+    fontSize: 15,
     fontWeight: "bold",
   },
   description: {
-    fontSize: 23,
+    fontSize: 15,
     fontWeight: "normal",
   },
   separator: {

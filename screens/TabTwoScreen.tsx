@@ -27,99 +27,118 @@ const windowWidth = Dimensions.get("window").width;
 const windowHeght = Dimensions.get("window").height;
 const addtodata = firebase.database().ref("LikesList");
 
-const likeClickHandler = (value) => {
-  var date = new Date().getDate(); //Current Date
-  var month = new Date().getMonth() + 1; //Current Month
-  var year = new Date().getFullYear(); //Current Year
-  var hours = new Date().getHours(); //Current Hours
-  var min = new Date().getMinutes(); //Current Minutes
-  var sec = new Date().getSeconds(); //Current Seconds
-  Network.getIpAddressAsync().then((v) => {
-    const data = {
-      videoId: value.id,
-      ipAddress: v,
-      createDate:
-        date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec,
-    };
-    addtodata.push(data);
-  });
+const likeClickHandler = async (value, list) => {
+  var ip = await Network.getIpAddressAsync();
+  var id = value.id;
+  var likeFilterList = list.filter((list) => list.videoId == id);
+  var filterIP = likeFilterList.filter(
+    (likeFilterList) => likeFilterList.ipAddress == ip
+  );
+
+  if (filterIP.length == 0) {
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    Network.getIpAddressAsync().then((v) => {
+      const data = {
+        videoId: value.id,
+        ipAddress: v,
+        createDate:
+          date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec,
+      };
+      addtodata.push(data);
+    });
+  } else {
+    //console.log("******************DISLIKE**************************");
+  }
 };
 
-const Item = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <View
-      style={{
-        flexDirection: "row",
-        height: 80,
-      }}
-    >
-      <View style={{ flex: 0.2 }}>
-        <Image
-          style={{
-            height: 60,
-            width: 60,
-            borderRadius: 30,
-            resizeMode: "cover",
-            margin: 5,
-          }}
-          source={{
-            uri: item.flagImg,
-          }}
-        />
-      </View>
-      <View style={{ flexDirection: "column", flex: 0.4, padding: 5 }}>
-        <Text style={styles.title}>{item.nickname}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-      </View>
-      <View style={{ flex: 0.3, padding: 5 }}>
-        <ImageBackground
-          style={{
-            height: 60,
-            width: 90,
-            borderRadius: 5,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          source={{
-            uri: item.videoImg,
-          }}
+const Item = ({ item, onPress, style, likeList }) => {
+  let count = 0;
+  likeList.map((val) => {
+    if (item.id === val.videoId) {
+      count = count + 1;
+    }
+  });
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+      <View
+        style={{
+          flexDirection: "row",
+          height: 80,
+        }}
+      >
+        <View style={{ flex: 0.2 }}>
+          <Image
+            style={{
+              height: 50,
+              width: 50,
+              borderRadius: 25,
+              resizeMode: "cover",
+              margin: 5,
+            }}
+            source={{
+              uri: item.flagImg,
+            }}
+          />
+        </View>
+        <View style={{ flexDirection: "column", flex: 0.4, padding: 5 }}>
+          <Text style={styles.title}>{item.nickname}</Text>
+          <Text style={styles.description}>{item.description}</Text>
+        </View>
+        <View style={{ flex: 0.3, padding: 5 }}>
+          <ImageBackground
+            style={{
+              height: 50,
+              width: 80,
+              borderRadius: 5,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            source={{
+              uri: item.videoImg,
+            }}
+          >
+            <Image
+              style={{
+                height: 30,
+                width: 30,
+                borderRadius: 5,
+                resizeMode: "stretch",
+              }}
+              source={require("../assets/images/play.png")}
+            />
+          </ImageBackground>
+        </View>
+        <TouchableOpacity
+          style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
+          onPress={() => likeClickHandler(item, likeList)}
         >
           <Image
             style={{
-              height: 30,
-              width: 30,
-              borderRadius: 5,
-              resizeMode: "stretch",
+              height: 25,
+              width: 25,
+              resizeMode: "center",
             }}
-            source={require("../assets/images/play.png")}
+            source={require("../assets/images/like.png")}
+            //source={require("../assets/images/heart.png")}
           />
-        </ImageBackground>
+          <Text style={{ fontSize: 12, fontWeight: "700", color: "#ffae68" }}>
+            {count}
+          </Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={{ flex: 0.1, justifyContent: "center", alignItems: "center" }}
-        onPress={() => likeClickHandler(item)}
-      >
-        <Image
-          style={{
-            height: 30,
-            width: 30,
-            borderRadius: 35,
-            resizeMode: "center",
-          }}
-          source={require("../assets/images/like.png")}
-        />
-        <Text style={{ fontSize: 15, fontWeight: "700", color: "#ffae68" }}>
-          {item.like}
-        </Text>
-      </TouchableOpacity>
-    </View>
-    <View
-      style={styles.separator}
-      lightColor="#eee"
-      darkColor="rgba(255,255,255,0.1)"
-    />
-  </TouchableOpacity>
-);
+      <View
+        style={styles.separator}
+        lightColor="#eee"
+        darkColor="rgba(255,255,255,0.1)"
+      />
+    </TouchableOpacity>
+  );
+};
 
 export default function App(props) {
   const [selectedId, setSelectedId] = useState(null);
@@ -128,10 +147,22 @@ export default function App(props) {
   const [cate1, setCate1] = useState(true);
   const [cate2, setCate2] = useState(false);
   const [cate3, setCate3] = useState(false);
+  const [allLikeList, setAllLikeList] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
     const dbselect = firebase.database().ref("VideoDB");
+    const dbselectLike = firebase.database().ref("LikesList");
+
+    dbselectLike.on("value", (data) => {
+      const likeListObj = data.val();
+      const array = Object.values(likeListObj);
+      // const allLikelist = [];
+      // for (let i in data) {
+      //   allLikelist.push(likeList[i]);
+      // }
+      setAllLikeList(array);
+    });
 
     dbselect.on("value", (snapshot) => {
       const data = snapshot.val();
@@ -155,15 +186,16 @@ export default function App(props) {
         item={item}
         onPress={() => videoDetail(item.videoUrl, item)}
         style={{ backgroundColor }}
+        likeList={allLikeList}
       />
     );
   };
 
   const videoDetail = async (url: string, item: object) => {
     const { navigate } = props.navigation;
-    //console.warn(item.videoUrl);
-    navigate("TabTwoVideoDetail");
-    // navigation.navigate("TabTwoVideoDetail");
+    navigate("TabTwoVideoDetail", {
+      videoUrl: item.videoUrl,
+    });
   };
 
   const cateSelect = async () => {
@@ -267,11 +299,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   title: {
-    fontSize: 25,
+    fontSize: 15,
     fontWeight: "bold",
   },
   description: {
-    fontSize: 23,
+    fontSize: 15,
     fontWeight: "normal",
   },
   separator: {

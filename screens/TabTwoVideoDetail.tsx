@@ -5,7 +5,7 @@ import { Video, AVPlaybackStatus } from "expo-av";
 const windowWidth = Dimensions.get("window").width;
 const windowHeght = Dimensions.get("window").height;
 
-export default function App() {
+export default function App(props) {
   const video = React.useRef(null);
   const [status, setStatus] = React.useState({});
   return (
@@ -14,7 +14,7 @@ export default function App() {
         ref={video}
         style={styles.video}
         source={{
-          uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+          uri: props.route.params.videoUrl,
         }}
         useNativeControls
         resizeMode="contain"
@@ -50,5 +50,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+    margin: 20,
   },
 });
